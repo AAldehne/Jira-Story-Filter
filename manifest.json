@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Jira Story Cleaner",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["tabs", "storage"],
+  "host_permissions": ["https://tickets.optadata.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://tickets.optadata.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}
