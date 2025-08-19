@@ -6,8 +6,8 @@ Dieses Projekt ist ein kleines **Chrome-Plugin**, mit dem man im Jira-Board die 
 
 ### Optionen
 - **Alle** – keine Filter  
-- **In Arbeit** – blendet erledigte („DONE“) Tickets aus  
-- **Fertig** – blendet offene („NEW“ und „IN PROGRESS“) Tickets aus  
+- **Fertig** – blendet erledigte („DONE“) Tickets aus  
+- **In Arbeit** – blendet offene („NEW“ und „IN PROGRESS“) Tickets aus  
 
 Die letzte Auswahl wird im **LocalStorage** gespeichert und beim nächsten Öffnen übernommen.
 
