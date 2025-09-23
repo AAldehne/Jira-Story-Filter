@@ -1,7 +1,9 @@
 (function () {
-  const MODE_OFF = "OFF";
-  const MODE_IN_ARBEIT = "IN_ARBEIT";
-  const MODE_FERTIG = "FERTIG";
+  const MODE_OPEN = "open";
+  const MODE_SELECT = "select";
+  const MODE_IN_PROGRESS = "in_progress";
+  const MODE_DONE = "done";
+  const MODE_ALL = "all";
 
   const CONTAINER_SELECTORS =
     ".ghx-heading, .ghx-issue, [data-testid='software-board.issue-card']";
@@ -12,7 +14,7 @@
   const SEL_NEW =
     "span.jira-issue-status-lozenge.jira-issue-status-lozenge-new";
 
-  let currentMode = MODE_OFF;
+  let currentMode = MODE_ALL;
   let observer = null;
   let debounceTimer = null;
 
@@ -24,13 +26,17 @@
   }
 
   function applyMode() {
-    if (currentMode === MODE_OFF) {
+    if (currentMode === MODE_ALL) {
       return; // Reload to reset the view
-    }
-    if (currentMode === MODE_IN_ARBEIT) {
-      // exakt dein Bookmarklet: DONE entfernen
+    } else if (currentMode === MODE_OPEN) {
       removeByStatus(SEL_DONE);
-    } else if (currentMode === MODE_FERTIG) {
+    } else if (currentMode === MODE_SELECT) {
+      removeByStatus(SEL_DONE);
+      removeByStatus(SEL_INPROGRESS);
+    } else if (currentMode === MODE_IN_PROGRESS) {
+      removeByStatus(SEL_DONE);
+      removeByStatus(SEL_NEW);
+    } else if (currentMode === MODE_DONE) {
       // NEW + INPROGRESS entfernen
       removeByStatus(SEL_INPROGRESS);
       removeByStatus(SEL_NEW);
@@ -64,11 +70,11 @@
   ) {
     chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       if (msg?.type === "SET_MODE") {
-        currentMode = msg.mode || MODE_OFF;
+        currentMode = msg.mode || MODE_ALL;
         try {
           chrome.storage?.local?.set({ jiraStoryCleanerMode: currentMode });
         } catch {}
-        ensureObserver(currentMode !== MODE_OFF);
+        ensureObserver(currentMode !== MODE_ALL);
         applyMode();
         sendResponse?.({ ok: true, mode: currentMode });
         return true;
@@ -84,16 +90,16 @@
     const readMode = (cb) => {
       if (chrome?.storage?.local) {
         chrome.storage.local.get(["jiraStoryCleanerMode"], (res) => {
-          cb(res?.jiraStoryCleanerMode || MODE_OFF);
+          cb(res?.jiraStoryCleanerMode || MODE_ALL);
         });
       } else {
-        cb(MODE_OFF);
+        cb(MODE_ALL);
       }
     };
 
     readMode((saved) => {
       currentMode = saved;
-      ensureObserver(currentMode !== MODE_OFF);
+      ensureObserver(currentMode !== MODE_ALL);
       applyMode();
       console.log(`Jira Story Cleaner initialized with mode: ${currentMode}`);
     });
