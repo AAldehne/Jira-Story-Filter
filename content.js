@@ -77,13 +77,82 @@
         ensureObserver(currentMode !== MODE_ALL);
         applyMode();
         sendResponse?.({ ok: true, mode: currentMode });
-        return true;
+        return;
       }
+
       if (msg?.type === "GET_MODE") {
         sendResponse?.({ mode: currentMode });
-        return true;
+        return;
+      }
+
+      if (msg?.type === "expand_all") {
+        clickExpandAll();
+        sendResponse?.({ ok: true });
+        return;
+      }
+
+      if (msg?.type === "collapse_all") {
+        clickCollapseAll();
+        sendResponse?.({ ok: true });
+        return;
       }
     });
+  }
+
+  function clickExpandAll() {
+    console.log("🔍 Trying to expand all swimlanes...");
+
+    const menuBtn = document.querySelector("#board-tools-section-button");
+    if (!menuBtn) {
+      console.warn("⚠️ No board menu button found!");
+      return;
+    }
+
+    menuBtn.click(); // open menu
+
+    setTimeout(() => {
+      const expand = document.querySelector(".js-view-action-expand-all");
+      if (expand) {
+        expand.click();
+        console.log("✅ Clicked 'Expand all swimlanes'");
+
+        // Close the menu after a short delay to ensure Jira registers the click
+        setTimeout(() => {
+          menuBtn.click(); // toggles menu closed
+          console.log("🔒 Menu closed after expand");
+        }, 300);
+      } else {
+        console.warn("⚠️ Expand option not found");
+      }
+    }, 400);
+  }
+
+  function clickCollapseAll() {
+    console.log("🔍 Trying to collapse all swimlanes...");
+
+    const menuBtn = document.querySelector("#board-tools-section-button");
+    if (!menuBtn) {
+      console.warn("⚠️ No board menu button found!");
+      return;
+    }
+
+    menuBtn.click(); // open menu
+
+    setTimeout(() => {
+      const collapse = document.querySelector(".js-view-action-collapse-all");
+      if (collapse) {
+        collapse.click();
+        console.log("✅ Clicked 'Collapse all swimlanes'");
+
+        // Close the menu after a short delay
+        setTimeout(() => {
+          menuBtn.click();
+          console.log("🔒 Menu closed after collapse");
+        }, 300);
+      } else {
+        console.warn("⚠️ Collapse option not found");
+      }
+    }, 400);
   }
 
   function init() {

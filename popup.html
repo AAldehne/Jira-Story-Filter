@@ -18,11 +18,7 @@
         font-size: 14px;
         margin: 0 0 10px;
       }
-      .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
-      }
+
       button {
         padding: 8px 10px;
         border-radius: 10px;
@@ -31,23 +27,34 @@
       }
       button.active {
         border-color: #4c9aff;
+        background-color: #4c9aff;
         box-shadow: 0 0 0 2px rgba(76, 154, 255, 0.2);
       }
-      .muted {
-        font-size: 12px;
-        color: #666;
-        margin-top: 10px;
+
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+        background: #f7f8fa;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
       }
     </style>
   </head>
   <body>
-    <h1>Jira Story Cleaner</h1>
+    <h2>Jira Stories filter:</h2>
     <div class="grid">
       <button id="btnOpen">Offen</button>
       <button id="btnSelect">Dev</button>
       <button id="btnInProgress">In Arbeit</button>
       <button id="btnDone">Fertig</button>
       <button id="btnAll">Alle</button>
+    </div>
+    <h2>Actions:</h2>
+    <div class="grid">
+      <button id="btnAlleAufklappen">Alle Aufklappen</button>
+      <button id="btnAlleEinklappen">Alle Einklappen</button>
     </div>
     <script src="popup.js"></script>
   </body>
