@@ -26,16 +26,7 @@ Die letzte Auswahl wird im **LocalStorage** gespeichert und beim nächsten Öffn
 
 > Hinweis: Die Extension ist für Jira unter der Domain `https://tickets.optadata.com/` ausgelegt.
 
----
-
-## Nutzung
-
-- **Alle** zeigt das Board unverändert.  
-- **In Arbeit** blendet **DONE**-Karten aus.  
-- **Fertig** blendet **NEW** und **IN PROGRESS**-Karten aus.  
-- Beim Umschalten wird die Ansicht aktualisiert; Änderungen im Board (Jira SPA) werden automatisch berücksichtigt.
-
----
+--
 
 ## Alternative: Bookmarklets
 
